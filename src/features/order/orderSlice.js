@@ -4,7 +4,9 @@ import { createOrder } from "./orderAPI";
 const initialState = {
   orders: [],
   status: "idle",
+  currentOrder: null,
 };
+//we may need mmore info of current order
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
@@ -20,17 +22,15 @@ export const createOrderAsync = createAsyncThunk(
   }
 );
 
-export const counterSlice = createSlice({
+export const orderSlice = createSlice({
   name: "order",
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
-    increment: (state) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
-      state.value += 1;
+    //normal reducer used cuz order dont exist on database so we dont need thunk
+    resetOrder: (state) => {
+      //resetOrder action already created
+      state.currentOrder = null;
     },
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -43,15 +43,16 @@ export const counterSlice = createSlice({
       .addCase(createOrderAsync.fulfilled, (state, action) => {
         state.status = "idle";
         state.orders.push(action.payload);
+        state.currentOrder = action.payload;
       });
   },
 });
 
-export const { increment } = counterSlice.actions;
+export const { resetOrder } = orderSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
-// export const selectCount = (state) => state.counter.value;
+export const selectCurrentOrder = (state) => state.order.currentOrder;
 
-export default counterSlice.reducer;
+export default orderSlice.reducer;
