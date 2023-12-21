@@ -19,6 +19,7 @@ import {
   selectCurrentOrder,
 } from "../features/order/orderSlice";
 import { current } from "@reduxjs/toolkit";
+import { selectUserInfo } from "../features/user/userSlice";
 
 function Checkout() {
   const [open, setOpen] = useState(true);
@@ -49,7 +50,7 @@ function Checkout() {
     formState: { errors },
   } = useForm();
 
-  const user = useSelector(selectLoggedInUser);
+  const user = useSelector(selectUserInfo);
 
   const handleAddress = (e) => {
     setSelectedAddress(user.addresses[e.target.value]);
