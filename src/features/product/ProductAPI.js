@@ -73,6 +73,7 @@ export function fetchProductsByFilters(filter, sort, pagination) {
     );
     const data = await response.json();
     const totalItems = await response.headers.get("X-Total-Count"); //provided by json-server
+
     resolve({ data: { products: data, totalItems: +totalItems } });
   });
 }

@@ -24,7 +24,7 @@ import {
   ChevronRightIcon,
   StarIcon,
 } from "@heroicons/react/20/solid";
-import { ITEMS_PER_PAGE } from "../../../app/constants";
+import { ITEMS_PER_PAGE, discountedPrice } from "../../../app/constants";
 import { fetchBrands } from "../../product/ProductAPI";
 
 const sortOptions = [
@@ -530,11 +530,7 @@ function ProductGrid({ products }) {
                       </div>
                       <div>
                         <p className="text-sm font-medium text-gray-900">
-                          $
-                          {Math.round(
-                            product.price *
-                              (1 - product.discountPercentage / 100)
-                          )}
+                          ${discountedPrice(product)}
                         </p>
                         <p className="text-sm line-through font-medium text-gray-400">
                           ${product.price}
