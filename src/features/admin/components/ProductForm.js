@@ -28,6 +28,7 @@ function ProductForm() {
   const params = useParams();
   const selectedProduct = useSelector(selectProductById);
   const [openModal, setOpenModal] = useState(null);
+  const alert = useAlert();
 
   useEffect(() => {
     if (params.id) {
@@ -82,11 +83,13 @@ function ProductForm() {
             product.id = params.id;
             product.rating = selectedProduct.rating || 0;
             dispatch(updateProductAsync(product));
+            alert.success("Product Updated");
             reset();
           } else {
             dispatch(createProductAsync(product));
+            alert.success("Product Created");
+            //TODO : these alerts should check if API failed
             reset();
-            //TODO : on product successfully added clear fields and show a message
           }
         })}
       >
@@ -605,17 +608,17 @@ function ProductForm() {
           </button>
         </div>
       </form>
-      <Modal
-        title={
-          selectedProduct ? `Delete ${selectedProduct.title}` : "Default Title"
-        }
-        message="Are you sure you want to delete this Product?"
-        dangerOption="Delete"
-        cancelOption="Cancel"
-        dangerAction={handleDelete}
-        cancelAction={() => setOpenModal(null)}
-        showModal={openModal}
-      ></Modal>
+      {selectedProduct && (
+        <Modal
+          title={`Delete ${selectedProduct.title}`}
+          message="Are you sure you want to delete this Product?"
+          dangerOption="Delete"
+          cancelOption="Cancel"
+          dangerAction={handleDelete}
+          cancelAction={() => setOpenModal(null)}
+          showModal={openModal}
+        ></Modal>
+      )}
     </>
   );
 }
