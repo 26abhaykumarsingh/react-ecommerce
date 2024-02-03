@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Modal from "../../common/Modal";
+import { useAlert } from "react-alert";
 
 //same form is being used for both creating product and updating product
 function ProductForm() {
