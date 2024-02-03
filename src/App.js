@@ -17,7 +17,11 @@ import Checkout from "./pages/Checkout";
 import Protected from "./features/auth/components/Protected";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchItemsByUserIdAsync } from "./features/cart/cartSlice";
-import { selectLoggedInUser } from "./features/auth/authSlice";
+import {
+  checkAuthAsync,
+  selectLoggedInUser,
+  selectUserChecked,
+} from "./features/auth/authSlice";
 import PageNotFound from "./pages/404";
 import OrderSuccessPage from "./pages/OrderSuccessPage";
 import UserOrders from "./features/user/components/UserOrders";
@@ -152,6 +156,12 @@ const router = createBrowserRouter([
 function App() {
   const dispatch = useDispatch();
   const user = useSelector(selectLoggedInUser);
+  const userChecked = useSelector(selectUserChecked); //if we dont use this, if we reload /orders it will return us to login kyuki tab tak we dont get our user and react navigate us to /login, shuru me user nhi milega jab tak api call aye aur react navigate kr dega
+
+  useEffect(() => {
+    dispatch(checkAuthAsync());
+  }, [dispatch]);
+
   useEffect(() => {
     if (user) {
       dispatch(fetchItemsByUserIdAsync());
@@ -162,10 +172,12 @@ function App() {
 
   return (
     <div className="App">
-      <Provider template={AlertTemplate} {...options}>
-        <RouterProvider router={router} />
-        {/* Link must be inside the Provider  */}
-      </Provider>
+      {userChecked && (
+        <Provider template={AlertTemplate} {...options}>
+          <RouterProvider router={router} />
+          {/* Link must be inside the Provider  */}
+        </Provider>
+      )}
     </div>
   );
 }
