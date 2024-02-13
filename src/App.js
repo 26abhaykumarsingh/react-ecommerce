@@ -136,7 +136,7 @@ const router = createBrowserRouter([
     element: <PageNotFound></PageNotFound>,
   },
   {
-    path: "/orders",
+    path: "/my-orders",
     element: <UserOrdersPage></UserOrdersPage>,
     //we will add page later right now using component directly.
   },
